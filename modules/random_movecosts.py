@@ -9,7 +9,7 @@ from ..data.enum_options import RandomMoveCosts
 from ..data.MoveList import move_table
 
 value_limits = {
-    "BADGE":     {"BP": {"min": 1, "max": 8, }, "FP": {"min": 1, "max": 7, }},
+    "BADGE":     {"BP": {"min": 0, "max": 1, }, "FP": {"min": 1, "max": 7, }},
     "PARTNER":   {"FP": {"min": 1, "max": 8, }},
     "STARPOWER": {"FP": {"min": 1, "max": 3, }}
 }
@@ -92,7 +92,7 @@ def _get_fully_random_costs(movetype: str, costtype: str, random) -> list:
     min_value = value_limits.get(movetype).get(costtype).get("min")
     if (movetype, costtype) == ("BADGE", "BP"):
         # Special case for bp costs: 1-8 simply has too high of a median
-        max_value = 6
+        max_value = value_limits.get(movetype).get(costtype).get("max")
     else:
         max_value = value_limits.get(movetype).get(costtype).get("max")
 

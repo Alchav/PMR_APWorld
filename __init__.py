@@ -322,6 +322,16 @@ class PaperMarioWorld(World):
         elif self.options.bowser_castle_mode.value == BowserCastleMode.option_Shortened:
             self.entrance_list = get_bowser_shortened_pairs()
 
+        from worlds.generic.Rules import add_item_rule
+        for i in range(1, 16):
+            add_item_rule(self.multiworld.get_location(f"SSS Merluvlee's House Merlow's Badges {i}", self.player),
+                          lambda item: "Star Piece" not in item.name
+                                       and item.classification != ic.progression_skip_balancing)
+        for i in range(1, 7):
+            add_item_rule(self.multiworld.get_location(f"SSS Merluvlee's House Merlow's Rewards {i}", self.player),
+                          lambda item: "Star Piece" not in item.name
+                                       and item.classification != ic.progression_skip_balancing)
+
     def create_items(self) -> None:
         # This checks what locations are being included, gets those items, places non-shuffled items,
         # adds any desired beta items and badges, ensures we have the correct number of items by removing coins or
@@ -741,7 +751,7 @@ class PaperMarioWorld(World):
         if item.name == "3x Star Pieces":
             state.prog_items[self.player]["Star Piece"] += 3
         # Quizmo star pieces are events that can exist in multiple places, format "StarPiece_MAC_1"
-        elif item.name.startswith("StarPiece_") and state.prog_items[self.player][item.name] == 1:
+        elif item.name.startswith("StarPiece_") and state.prog_items[self.player][item.name] == 0:
             state.prog_items[self.player]["Star Piece"] += 1
         return super().collect(state, item)
 
